@@ -207,3 +207,7 @@ marimo/_lsp/
 __marimo__/
 
 .tmp
+
+# DuckDB
+data_warehouse/job_ads.duckdb
+job_ads.duckdb
