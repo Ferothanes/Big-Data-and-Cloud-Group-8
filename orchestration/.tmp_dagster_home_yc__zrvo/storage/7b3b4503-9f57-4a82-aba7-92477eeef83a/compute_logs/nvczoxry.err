@@ -1,0 +1,22 @@
+[32m2025-10-21 10:58:14 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - LOGS_CAPTURED - Started capturing logs in process (pid: 81743).
+[32m2025-10-21 10:58:14 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - STEP_START - Started execution of step "dlt_load".
+2025-10-21 10:58:36,513|[WARNING]|81743|8796538880|dlt|validate.py|verify_normalized_table:91|In schema `jobads_source`: The following columns in table 'project_job_ads' did not receive any data during this load and therefore could not have their types inferred:
+  - original_id
+  - description__company_information
+  - description__needs
+  - description__requirements
+  - driving_license
+  - removed_date
+
+Unless type hints are provided, these columns will not be materialized in the destination.
+One way to provide type hints is to use the 'columns' argument in the '@dlt.resource' decorator.  For example:
+
+@dlt.resource(columns={'original_id': {'data_type': 'text'}})
+
+[32m2025-10-21 10:58:38 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - STEP_OUTPUT - Yielded output "dlt_jobads_source_jobads_j7Cq_ZJe_GkT" of type "Nothing". (Type check passed).
+[32m2025-10-21 10:58:38 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - ASSET_MATERIALIZATION - Materialized value dlt_jobads_source_jobads_j7Cq_ZJe_GkT.
+[32m2025-10-21 10:58:38 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - STEP_OUTPUT - Yielded output "dlt_jobads_source_jobads_9puE_nYg_crq" of type "Nothing". (Type check passed).
+[32m2025-10-21 10:58:38 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - ASSET_MATERIALIZATION - Materialized value dlt_jobads_source_jobads_9puE_nYg_crq.
+[32m2025-10-21 10:58:38 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - STEP_OUTPUT - Yielded output "dlt_jobads_source_jobads_MVqp_eS8_kDZ" of type "Nothing". (Type check passed).
+[32m2025-10-21 10:58:38 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - ASSET_MATERIALIZATION - Materialized value dlt_jobads_source_jobads_MVqp_eS8_kDZ.
+[32m2025-10-21 10:58:39 +0200[0m - dagster - [34mDEBUG[0m - __ASSET_JOB - 7b3b4503-9f57-4a82-aba7-92477eeef83a - 81743 - dlt_load - STEP_SUCCESS - Finished execution of step "dlt_load" in 24.06s.
