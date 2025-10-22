@@ -1,0 +1,11 @@
+FROM python:3.11-slim
+
+ENV DUCKDB_PATH=/data_warehouse/job_ads.duckdb
+
+WORKDIR /app/dashboard
+
+COPY dashboard/ /app/dashboard/
+
+RUN pip install streamlit duckdb pandas plotly
+
+CMD ["streamlit", "run", "dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]

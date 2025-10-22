@@ -1,0 +1,22 @@
+services:
+  dwh_pipeline:
+    build:
+      context: .
+      dockerfile: dockerfile.dwh
+    volumes:
+      #read-only bind mount
+      - ${HOME}/.dbt/profiles.yml:/pipeline/profiles.yml:ro
+      #blind mount
+      - ./data_warehouse:/data_warehouse
+    ports:
+      - "3000:3000"
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: dockerfile.dashboard
+    volumes:
+      #read-only bind mount
+      - ./data_warehouse:/data_warehouse:ro
+    ports:
+      - "8501:8501"
