@@ -208,6 +208,17 @@ __marimo__/
 
 .tmp
 
-# DuckDB
-data_warehouse/job_ads.duckdb
+# dlt
+**/.dlt/
+ 
+# duckdb
+*.duckdb
 job_ads.duckdb
+ 
+# dbt
+target/
+dbt_packages/
+logs/
+ 
+#dagster
+**/.tmp*/

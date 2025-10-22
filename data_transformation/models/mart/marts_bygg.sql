@@ -25,14 +25,14 @@ SELECT
     MAX(a.experience_required) AS "Experience Required",
     MAX(a.driving_license_required) AS "Driving License Required",
     MAX(a.access_to_own_car) AS "Access to Own Car"
-FROM fct_job_ads f
-INNER JOIN dim_occupation o
+FROM {{ ref('fct_job_ads') }} f
+INNER JOIN {{ ref('dim_occupation') }} o
     ON f.occupation_id = o.occupation_id
-INNER JOIN dim_job_details j
+INNER JOIN {{ ref('dim_job_details') }} j
     ON f.job_details_id = j.job_details_id
-INNER JOIN dim_employer e
+INNER JOIN {{ ref('dim_employer') }} e
     ON f.employer_id = e.employer_id
-INNER JOIN dim_auxilliary_attributes a
+INNER JOIN {{ ref('dim_auxilliary_attributes') }} a
     ON f.auxilliary_attributes_id = a.auxilliary_attributes_id
 WHERE o.occupation_field = 'Bygg och anläggning'
     AND f.application_deadline >= CURRENT_DATE
