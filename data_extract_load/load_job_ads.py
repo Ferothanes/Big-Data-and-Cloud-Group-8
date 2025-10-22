@@ -53,9 +53,9 @@ def run_pipeline(query, table_name, occupation_fields, duckdb_path="data_warehou
 
     # ✅ Updated DLT syntax — no more `credentials`
     pipeline = dlt.pipeline(
-        pipeline_name="jobads_search_duckdb",
+        pipeline_name="job_ads",
         destination=dlt.destinations.duckdb(duckdb_path),
-        #dataset_name="staging",
+        dataset_name="staging",
     )
 
     for occupation_field in occupation_fields:
