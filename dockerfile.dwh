@@ -1,0 +1,14 @@
+FROM python:3.11
+
+ENV DBT_PROFILES_DIR=/pipeline \
+    DUCKDB_PATH=/data_warehouse/job_ads.duckdb
+
+WORKDIR /pipeline/orchestration
+
+COPY data_extract_load/ /pipeline/data_extract_load/
+COPY data_transformation/ /pipeline/data_transformation/
+COPY orchestration/ /pipeline/orchestration/
+
+RUN pip install dagster dagster-dbt dagster-dlt dagster-webserver dbt-core dbt-duckdb dlt duckdb 
+
+CMD ["dagster", "dev", "-f", "definitions.py", "-h", "0.0.0.0", "-p", "3000"]

@@ -9,12 +9,12 @@ def layout():
     with col1:
         st.title("HR Job Ads Dashboard")
     with col2:
-        st.image("streamlit_dashboard/images/HR_LOGO.png", width=170)
+        st.title("")
 
     # Load data for each occupation field
-    df_pedagogik = query_job_table("marts_pedagogik")
-    df_kultur = query_job_table("marts_kultur")
-    df_bygg = query_job_table("marts_bygg")
+    df_pedagogik = query_job_table("marts.marts_pedagogik")
+    df_kultur = query_job_table("marts.marts_kultur")
+    df_bygg = query_job_table("marts.marts_bygg")
 
     # Mapping tables for selectbox
     tables = {
@@ -48,7 +48,7 @@ def layout():
             .sort_values("Vacancies", ascending=False)
             .set_index("Workplace City")
         )
-        st.dataframe(df_city, width='stretch')
+        st.dataframe(df_city, use_container_width=True)
 
     with cols[1]:
         df_occ = (
@@ -57,7 +57,7 @@ def layout():
             .sort_values("Vacancies", ascending=False)
             .set_index("Occupation")
         )
-        st.dataframe(df_occ, width='stretch')
+        st.dataframe(df_occ, use_container_width=True)
 
 # Bar charts Top 10 Occupation Groups & Top 10 Regions
     cols = st.columns(1)
@@ -84,7 +84,7 @@ def layout():
             yaxis_categoryorder='total ascending'
         )
         fig_occ.update_xaxes(showticklabels=False)
-        st.plotly_chart(fig_occ, width='stretch')
+        st.plotly_chart(fig_occ, use_container_width=True)
 
     cols = st.columns(1)
 
@@ -110,7 +110,7 @@ def layout():
             yaxis_categoryorder='total ascending'
         )
         fig_reg.update_xaxes(showticklabels=False)
-        st.plotly_chart(fig_reg, width='stretch')
+        st.plotly_chart(fig_reg, use_container_width=True)
 
     # Pie chart for Employment Type
     cols = st.columns(1)
@@ -126,7 +126,7 @@ def layout():
         fig_emp_type.update_layout(
             title={'text': "Vacancies by Employment Type", 'font': {'size': 26}},
         )
-        st.plotly_chart(fig_emp_type, width='stretch')
+        st.plotly_chart(fig_emp_type, use_container_width=True)
 
 
 

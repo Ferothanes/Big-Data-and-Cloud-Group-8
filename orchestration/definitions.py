@@ -3,6 +3,7 @@
 # ==================== #
 from pathlib import Path
 import sys
+import os
 import dagster as dg
 from dagster_dbt import DbtCliResource, DbtProject, dbt_assets
 
@@ -12,6 +13,14 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 # Import your ingestion pipeline
 from data_extract_load.load_job_ads import run_pipeline
+
+# to import dlt script
+sys.path.insert(0, '../data_extract_load')
+from data_extract_load.load_job_ads import jobads_source
+
+# Paths
+DUCKDB_PATH = os.getenv("DUCKDB_PATH")
+DBT_PROFILES_DIR = os.getenv("DBT_PROFILES_DIR")
 
 # ==================== #
 #   data warehouse     #
@@ -42,7 +51,8 @@ try:
     dbt_project_directory = PROJECT_ROOT / "data_transformation"
     profiles_dir = Path.home() / ".dbt"
 
-    dbt_project = DbtProject(project_dir=dbt_project_directory, profiles_dir=profiles_dir)
+    dbt_project = DbtProject(project_dir=dbt_project_directory,
+                        profiles_dir=Path(DBT_PROFILES_DIR))
     dbt_resource = DbtCliResource(project_dir=dbt_project)
     dbt_project.prepare_if_dev()
 
