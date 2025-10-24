@@ -107,11 +107,6 @@ This repository implements an end-to-end pipeline for collecting, storing, trans
 - Update IaC variables with image names / tags, then terraform apply.
 - Ensure App Service environment variables include DUCKDB_PATH and DBT_PROFILES_DIR (or include a profiles.yml in the image).
 
-### Quick validation queries (examples)
-- Raw table existence: SELECT name FROM sqlite_master; (DuckDB: PRAGMA show_tables;)
-- Count raw rows: SELECT count(*) FROM project_job_ads;
-- Count mart rows: SELECT count(*) FROM marts.marts_bygg;
-
 ### Troubleshooting pointers
 - If dbt complains about missing profile: verify DBT_PROFILES_DIR and that profiles.yml contains profile `dbt_duckdb`.
 - If dashboard shows empty marts: ensure dbt build completed successfully and targeted the same DuckDB file path.
