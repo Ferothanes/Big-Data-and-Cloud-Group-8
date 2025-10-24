@@ -51,7 +51,6 @@ def jobsearch_resource(params):
 def run_pipeline(query, table_name, occupation_fields, duckdb_path="data_warehouse/job_ads.duckdb"):
     Path(duckdb_path).parent.mkdir(parents=True, exist_ok=True)
 
-    # ✅ Updated DLT syntax — no more `credentials`
     pipeline = dlt.pipeline(
         pipeline_name="job_ads",
         destination=dlt.destinations.duckdb(duckdb_path),
@@ -63,7 +62,7 @@ def run_pipeline(query, table_name, occupation_fields, duckdb_path="data_warehou
         load_info = pipeline.run(
             jobsearch_resource(params=params)
         )
-        print(f"✅ Loaded occupation field: {occupation_field}")
+        print(f"Loaded occupation field: {occupation_field}")
         print(load_info)
 
 
@@ -83,4 +82,4 @@ if __name__ == "__main__":
     table_name = "project_job_ads"
     occupation_fields = ("j7Cq_ZJe_GkT", "9puE_nYg_crq", "MVqp_eS8_kDZ")
 
-    run_pipeline(query, table_name, occupation_fields, duckdb_path="data_warehouse/job_ads.duckdb")
+    run_pipeline(query, table_name, occupation_fields)

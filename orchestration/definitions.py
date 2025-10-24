@@ -37,7 +37,7 @@ def load_job_ads_to_duckdb():
     table_name = "project_job_ads"
     occupation_fields = ["j7Cq_ZJe_GkT", "9puE_nYg_crq", "MVqp_eS8_kDZ"]
 
-    run_pipeline(query, table_name, occupation_fields, duckdb_path=db_path)
+    run_pipeline(query, table_name, occupation_fields, duckdb_path=DUCKDB_PATH)
     return "Job ads successfully loaded into DuckDB"
 
 
