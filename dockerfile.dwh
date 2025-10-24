@@ -1,7 +1,7 @@
 FROM python:3.11
 
-ENV DBT_PROFILES_DIR=/pipeline \
-    DUCKDB_PATH=/data_warehouse/job_ads.duckdb
+# ENV DBT_PROFILES_DIR=/pipeline \
+#     DUCKDB_PATH=/data_warehouse/job_ads.duckdb
 
 WORKDIR /pipeline/orchestration
 
