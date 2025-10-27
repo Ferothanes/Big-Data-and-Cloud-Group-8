@@ -89,8 +89,19 @@ if dbt_assets_list:
 # ==================== #
 schedule_ingestion = dg.ScheduleDefinition(
     job=job_ingestion,
-    cron_schedule="25 11 * * *"  # UTC
+    cron_schedule="25 15 * * *"  # UTC
 )
+
+# ==================== #
+#                      #
+#        Sensor        #
+#                      #
+# ==================== #
+@dg.asset_sensor(asset_key=dg.AssetKey("load_job_ads_to_duckdb"),
+           job_name="job_dbt")
+def dlt_load_sensor():
+    yield dg.RunRequest()
+
 
 # ==================== #
 #     Definitions      #
@@ -102,4 +113,5 @@ defs = dg.Definitions(
     resources=resources,
     jobs=jobs,
     schedules=[schedule_ingestion],
+    sensors=[dlt_load_sensor],
 )
