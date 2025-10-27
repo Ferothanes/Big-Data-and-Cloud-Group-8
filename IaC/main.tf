@@ -19,13 +19,12 @@ provider "azurerm" {
 # Resource Group
 # -------------------------------
 resource "azurerm_resource_group" "rg" {
-  name     = "myTFResourceGroup"       # <<< CHANGE if you want a different RG name
-  location = "swedencentral"          
+  name     = "myTFResourceGroup"   # <<< change name if you want
+  location = "swedencentral"
 }
 
 # -------------------------------
-# Azure resource names must be unique — this adds a random number (e.g., acr12345) 
-# so Terraform doesn’t fail if the name already exists.
+# Random suffix for unique resource names
 # -------------------------------
 resource "random_integer" "number" {
   min = 10000
@@ -36,10 +35,10 @@ resource "random_integer" "number" {
 # Azure Container Registry (ACR)
 # -------------------------------
 resource "azurerm_container_registry" "acr" {
-  name                = "acr${random_integer.number.result}"    # Generates a unique ACR name
+  name                = "${var.prefix_app_name}acr${random_integer.number.result}"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  sku                 = "Basic"  <<< CHEAP 
+  sku                 = "Basic"   # <<< cheap tier
   admin_enabled       = true
 }
 
@@ -51,34 +50,30 @@ resource "azurerm_service_plan" "asp" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   os_type             = "Linux"
-  sku_name            = "B1"            # <<< B1 for cheaper dev/test tier
+  sku_name            = "B1"  # <<< cheap dev/test tier
 }
 
 # -------------------------------
-# Web App (Containerized)
+# Web App (Streamlit Dashboard)
 # -------------------------------
-resource "azurerm_linux_web_app" "app" {
-  name                = "${var.prefix_app_name}-app"
+resource "azurerm_linux_web_app" "dashboard" {
+  name                = "${var.prefix_app_name}-dashboard-app"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
     application_stack {
-      docker_image_name   = "${azurerm_container_registry.acr.login_server}/${var.prefix_app_name}:latest"
+      docker_image_name   = "${azurerm_container_registry.acr.login_server}/${var.prefix_app_name}-dashboard:latest"
       docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
     }
-
-    always_on = true  # <<< Adjust? Keeps app alive (recommended for pipelines/dashboards)
+    always_on = true
   }
 
-  # Environment variables + ACR credentials
   app_settings = {
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
-
-
-    WEBSITES_PORT                   = "8080"  #<<< PORT 
+    WEBSITES_PORT                   = "8501"
   }
 }
