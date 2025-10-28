@@ -1,23 +1,26 @@
 services:
-  dwh_pipeline:
+  project_pipeline:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: dockerfile.dwh
-    volumes:
-      #read-only bind mount
-      - ${HOME}/.dbt/profiles.yml:/pipeline/profiles.yml:ro
-      #blind mount
-      - ./data_warehouse:/data_warehouse
+    # volumes:
+    #   #read-only bind mount
+    #   - ${HOME}/.dbt/profiles.yml:/pipeline/profiles.yml:ro
+    #   #blind mount
+    #   - ./data_warehouse:/data_warehouse
     ports:
       - "3000:3000"
     #image: azuregroupprojectacr16040.azurecr.io/dwh_pipeline:latest # Update with your ACR login server
 
-  dashboard:
+  project_dashboard:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: dockerfile.dashboard
-    volumes:
-      #read-only bind mount
-      - ./data_warehouse:/data_warehouse:ro
+    # volumes:
+      # #read-only bind mount
+      # - ./data_warehouse:/data_warehouse:ro
     ports:
       - "8501:8501"
+    image: crgroup8hr-aff9adfeagc0b7c0.azurecr.io/project_dashboard:latest
