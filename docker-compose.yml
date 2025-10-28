@@ -10,6 +10,7 @@ services:
       - ./data_warehouse:/data_warehouse
     ports:
       - "3000:3000"
+    #image: azuregroupprojectacr16040.azurecr.io/dwh_pipeline:latest # Update with your ACR login server
 
   dashboard:
     build:
