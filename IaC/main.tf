@@ -32,6 +32,24 @@ resource "random_integer" "number" {
 }
 
 # -------------------------------
+# Storage Account for DuckDB & DBT
+# -------------------------------
+resource "azurerm_storage_account" "storage" {
+  name                     = "${var.prefix_app_name}storage${random_integer.number.result}"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_share" "file_share" {
+  name                 = "data"
+  storage_account_name = azurerm_storage_account.storage.name
+  quota                = 50  # GB
+}
+
+
+# -------------------------------
 # Azure Container Registry (ACR)
 # -------------------------------
 resource "azurerm_container_registry" "acr" {
@@ -63,17 +81,50 @@ resource "azurerm_linux_web_app" "dashboard" {
   service_plan_id     = azurerm_service_plan.asp.id
 
   site_config {
-    application_stack {
-      docker_image_name   = "${azurerm_container_registry.acr.login_server}/${var.prefix_app_name}-dashboard:latest"
-      docker_registry_url = "https://${azurerm_container_registry.acr.login_server}"
-    }
     always_on = true
   }
 
   app_settings = {
+    WEBSITES_PORT                   = "8501"
     DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.acr.login_server}"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
-    WEBSITES_PORT                   = "8501"
+    DOCKER_CUSTOM_IMAGE_NAME        = "${azurerm_container_registry.acr.login_server}/${var.prefix_app_name}-dashboard:latest"
+  }
+}
+
+# -------------------------------
+# Container Instance (DWH Pipeline)
+# -------------------------------
+resource "azurerm_container_group" "dwh_pipeline" {
+  name                = "${var.prefix_app_name}-pipeline"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  os_type             = "Linux"
+  ip_address_type     = "Public"
+  dns_name_label      = "${var.prefix_app_name}-pipeline-${random_integer.number.result}"
+
+  container {
+    name   = "dwh-pipeline"
+    image  = "${azurerm_container_registry.acr.login_server}/dwh_pipeline:latest"
+    cpu    = "1"
+    memory = "4"
+
+    ports {
+      port     = 80
+      protocol = "TCP"
+    }
+
+
+    environment_variables = {
+      DBT_PROFILES_DIR = "/mnt/data/.dbt"
+      DUCKDB_PATH      = "/mnt/data/job_ads.duckdb"
+    }
+  }
+
+  image_registry_credential {
+    server   = azurerm_container_registry.acr.login_server
+    username = azurerm_container_registry.acr.admin_username
+    password = azurerm_container_registry.acr.admin_password
   }
 }
