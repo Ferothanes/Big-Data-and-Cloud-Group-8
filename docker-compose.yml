@@ -11,7 +11,7 @@ services:
     #   - ./data_warehouse:/data_warehouse
     ports:
       - "3000:3000"
-    #image: azuregroupprojectacr16040.azurecr.io/dwh_pipeline:latest # Update with your ACR login server
+    image: azureacr83769.azurecr.io/dwh_pipeline:latest # Update with your ACR login server
 
   project_dashboard:
     platform: linux/amd64
@@ -23,4 +23,4 @@ services:
       # - ./data_warehouse:/data_warehouse:ro
     ports:
       - "8501:8501"
-    image: crgroup8hr-aff9adfeagc0b7c0.azurecr.io/project_dashboard:latest
+    image: azureacr83769.azurecr.io/dashboard:latest
