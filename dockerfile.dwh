@@ -11,4 +11,4 @@ COPY orchestration/ /pipeline/orchestration/
 
 RUN pip install dagster dagster-dbt dagster-dlt dagster-webserver dbt-core dbt-duckdb dlt duckdb 
 
-CMD ["dagster", "dev", "-f", "orchestration/definitions.py", "-h", "0.0.0.0", "-p", "3000"]
+CMD ["dagster", "dev", "-f", "definitions.py", "-h", "0.0.0.0", "-p", "3000"]
