@@ -48,4 +48,27 @@
     As you can see above our standard Tier gives us 100 GiB, and we have used 3.82 GiB by spinning up our two containers. 
     This means that if we don't exceed the 100 GiB limit, no extra cost apply.
     The pricing plan Standard is recommended for app production. 
-    
+
+---
+# Snowflake comparison
+
+<img src = "assets/Snowflake Credit Cost.png" width=700 height=250>
+
+
+| **Resource** | **Tier / Assumption** | **Approx. Monthly Cost (USD)** | **Description** |
+| ------------ | --------------------- | ------------------------------ | --------------- |
+| App Service Plan | Premium v3 P0V3 | ~$65 | Runs the containerized web application / dashboard 24/7. |
+| Azure Container Registry (ACR) | Standard | ~$20 | Stores Docker image used for deployment. Includes 100 GB free. |
+| Azure File Share Storage | StorageV2 (general purpose v2), 180 GB/month | ~$12 | Dashboard data or cached ETL results.                          |
+| Azure Container Instance (Dagster) | Linux Standard (SKU) | ~$48 | Orchestrates pipeline and schedules ETL jobs. |
+| Resource Group + Terraform Infrastructure | – | Free | No direct cost. |
+| Snowflake Compute (ETL) | Small warehouse, 2 credits/hr × 0.25 hr/day × 30 days × $3.90/credit | $58.50 | Dagster ETL runs 15 min/day. |
+| Snowflake Storage | 180 GB | $4.14 | Snowflake storage cost. |
+
+## **Total Estimated Monthly Cost: ≈ $218 / month**
+
+    - Replacing DuckDB with Snowflake for ETL slightly increases monthly costs ($82/month) but eliminates local database management and allows scalable cloud ETL.
+
+    - Since the data only updates once a day the dashboard can run fully on Azure, using cached or static data which means we only use Snowflake compute for 15 minutes per day.
+
+    - On premise managing is not needed, Snowflake handles it.
