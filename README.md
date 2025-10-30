@@ -16,9 +16,9 @@
 ### App Service Plan
 <img src = "assets/App Service Plan.png" width=700 height=300>
 
-    We have been using Basic 1 & 2 for testing. 
-    The cost estimation is based on the lowest premium version. 
-    As displayed there are different options to scale up/down based on the workload.
+We have been using Basic 1 & 2 for testing. 
+The cost estimation is based on the lowest premium version. 
+As displayed there are different options to scale up/down based on the workload.
 
 ### Storage in Azure File Share
 
@@ -30,24 +30,24 @@
 
 *Based on appending data storage once a day and keep data for 6 months with RA-GRS Standard HDD pricing ($0.075/GB/month)*
 
-    There is a lot of consideration regarding storage. 
-    It is important to decide how to setup everything - if you want snapshots, backup, transactions etc. 
-    A consideration is also to move old data to Archive for cheaper long-term storage or decide to not store historical data at all.
+There is a lot of consideration regarding storage. 
+It is important to decide how to setup everything - if you want snapshots, backup, transactions etc. 
+A consideration is also to move old data to Archive for cheaper long-term storage or decide to not store historical data at all.
 
 
 ### Container Instance (ACI)
 <img src = "assets/Container Instance Cost Estimation.png" width=700 height=150>
 
-    Above you can see the daily cost for running the container. 
-    The container instance materializes the data with Dagster to the database for storage. 
-    The process in Dagster runs automatically with scheduling and sensors. 
+Above you can see the daily cost for running the container. 
+The container instance materializes the data with Dagster to the database for storage. 
+The process in Dagster runs automatically with scheduling and sensors. 
 
 ### Container Registry (ACR)
 <img src = "assets/ACR.png" width=600 Heigh=150>
 
-    As you can see above our standard Tier gives us 100 GiB, and we have used 3.82 GiB by spinning up our two containers. 
-    This means that if we don't exceed the 100 GiB limit, no extra cost apply.
-    The pricing plan Standard is recommended for app production. 
+As you can see above our standard Tier gives us 100 GiB, and we have used 3.82 GiB by spinning up our two containers. 
+This means that if we don't exceed the 100 GiB limit, no extra cost apply.
+The pricing plan Standard is recommended for app production. 
 
 ---
 # Snowflake comparison
@@ -67,8 +67,8 @@
 
 ## **Total Estimated Monthly Cost: ≈ $218 / month**
 
-    - Replacing DuckDB with Snowflake for ETL slightly increases monthly costs ($82/month) but eliminates local database management and allows scalable cloud ETL.
+- Replacing DuckDB with Snowflake for ETL slightly increases monthly costs ($82/month) but eliminates local database management and allows scalable cloud ETL.
 
-    - Since the data only updates once a day the dashboard can run fully on Azure, using cached or static data which means we only use Snowflake compute for 15 minutes per day.
+- Since the data only updates once a day the dashboard can run fully on Azure, using cached or static data which means we only use Snowflake compute for 15 minutes per day.
 
-    - On premise managing is not needed, Snowflake handles it.
+- On premise managing is not needed, Snowflake handles it.
